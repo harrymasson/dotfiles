@@ -68,11 +68,13 @@ nav:
       - Development: quick-reference/development.md
       - Sessions & Multitasking: quick-reference/sessions.md
       - Remote: quick-reference/remote.md
+      - Neovim: quick-reference/neovim.md
   - Tools:
       - Chezmoi: tools/chezmoi.md
       - Git: tools/git.md
       - Homebrew: tools/homebrew.md
       - mise: tools/mise.md
+      - Neovim: tools/neovim.md
       - Tmux: tools/tmux.md
       - Zsh: tools/zsh.md
   - Archive: archive/past-experiments.md

@@ -25,8 +25,8 @@ Personal macOS dotfiles managed with [chezmoi](https://www.chezmoi.io/). One rep
 ## Sections
 
 - **[Getting Started](getting-started/index.md)** — what's managed, install on a new machine, repo structure
-- **[Quick Reference](quick-reference/index.md)** — workflow guides: navigation, git, development, sessions, remote
-- **[Tools](tools/chezmoi.md)** — per-tool config reference: chezmoi, git, homebrew, mise, tmux, zsh
+- **[Quick Reference](quick-reference/index.md)** — workflow guides: navigation, git, development, sessions, remote, neovim
+- **[Tools](tools/chezmoi.md)** — per-tool config reference: chezmoi, git, homebrew, mise, neovim, tmux, zsh
 - **[Worklog](worklog/index.md)** — setup notes and migration docs (historical, not evergreen)
 - **[Archive](archive/past-experiments.md)** — past experiments and abandoned approaches
 
