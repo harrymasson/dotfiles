@@ -1,0 +1,5 @@
+# ~/.config/git/ignore
+# Purpose: Global gitignore patterns
+# Source: chezmoi: home/dot_config/git/ignore
+
+**/.claude/settings.local.json

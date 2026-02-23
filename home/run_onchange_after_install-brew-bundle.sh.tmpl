@@ -1,0 +1,21 @@
+#!/bin/bash
+# Install Homebrew packages from Brewfile.
+# run_onchange_: re-runs automatically when Brewfile content changes.
+# The hash comment below is replaced by chezmoi at apply time — changing the
+# Brewfile changes the hash, which changes this script's content, which triggers
+# a re-run. To force a re-run manually: chezmoi state reset
+#
+# Brewfile hash: {{ include (joinPath (.chezmoi.sourceDir | dir) "Brewfile") | sha256sum }}
+
+set -e
+
+if ! command -v brew &>/dev/null; then
+  echo "Homebrew not found — install from https://brew.sh first" >&2
+  exit 1
+fi
+
+BREWFILE="{{ .chezmoi.sourceDir | dir }}/Brewfile"
+
+echo "Installing Homebrew packages from Brewfile..."
+brew bundle install --file="$BREWFILE" --no-upgrade
+echo "brew bundle done."

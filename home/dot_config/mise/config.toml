@@ -1,0 +1,11 @@
+# ~/.config/mise/config.toml
+# Global mise tool versions. These are the defaults for any directory that
+# doesn't have its own .mise.toml.
+#
+# To update a version: mise use --global node@<version>
+# To see what's active: mise current
+# To install all tools listed here: mise install
+
+[tools]
+node = "22"      # was nvm default; matches v22.16.0 (lts/jod)
+python = "3.14"  # matches current active python

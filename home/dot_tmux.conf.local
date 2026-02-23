@@ -1,0 +1,111 @@
+# ~/.tmux.conf.local
+# Oh my tmux! user customisations.
+# Source: chezmoi: home/dot_tmux.conf.local
+#
+# Edit: <prefix> + e   Reload: <prefix> + r
+
+
+# -- prefix --------------------------------------------------------------------
+
+# Use C-a as the sole prefix (remove C-b)
+set -gu prefix2
+unbind C-a
+unbind C-b
+set -g prefix C-a
+bind C-a send-prefix
+
+
+# -- splits --------------------------------------------------------------------
+
+# Visual split bindings: | for vertical, - for horizontal (keeps current path)
+bind | split-window -h -c '#{pane_current_path}'
+bind - split-window -v -c '#{pane_current_path}'
+
+
+# -- terminal ------------------------------------------------------------------
+
+# Lock in tmux-256color for consistent truecolor on local and remote boxes.
+# If a remote host is missing this terminfo: tic -x ~/.terminfo/tmux-256color.ti
+set -g default-terminal "tmux-256color"
+set -as terminal-features ",*:RGB"
+
+
+# -- mouse & behaviour ---------------------------------------------------------
+
+set -g mouse on
+set -g allow-rename off
+
+# New windows inherit the current directory (splits already do this via | and -)
+bind c new-window -c "#{pane_current_path}"
+
+
+# -- clipboard -----------------------------------------------------------------
+
+tmux_conf_copy_to_os_clipboard=true
+
+# OSC 52 passthrough — copy in remote tmux lands in local clipboard
+# (requires terminal support; Ghostty supports this)
+set -g set-clipboard on
+
+
+# -- ssh -----------------------------------------------------------------------
+
+# Keep SSH agent socket fresh when reattaching to an existing session
+set -g update-environment "DISPLAY SSH_ASKPASS SSH_AUTH_SOCK SSH_AGENT_PID SSH_CONNECTION WINDOWID XAUTHORITY"
+
+
+# -- theming: Catppuccin Mocha -------------------------------------------------
+
+tmux_conf_theme_colour_1="#1e1e2e"   # base         (dark bg)
+tmux_conf_theme_colour_2="#313244"   # surface0     (gray)
+tmux_conf_theme_colour_3="#585b70"   # surface2     (light gray)
+tmux_conf_theme_colour_4="#89b4fa"   # blue         (accent)
+tmux_conf_theme_colour_5="#f9e2af"   # yellow
+tmux_conf_theme_colour_6="#1e1e2e"   # base         (dark)
+tmux_conf_theme_colour_7="#1e1e2e"   # base         (dark text on pink bg — left status uptime fg)
+tmux_conf_theme_colour_8="#1e1e2e"   # base         (dark)
+tmux_conf_theme_colour_9="#f9e2af"   # yellow
+tmux_conf_theme_colour_10="#f5c2e7"  # pink
+tmux_conf_theme_colour_11="#a6e3a1"  # green
+tmux_conf_theme_colour_12="#a6adc8"  # subtext0     (readable on dark bg — right status date/time fg)
+tmux_conf_theme_colour_13="#1e1e2e"  # base         (dark text on pink bg — right status username fg)
+tmux_conf_theme_colour_14="#1e1e2e"  # base
+tmux_conf_theme_colour_15="#1e1e2e"  # base
+tmux_conf_theme_colour_16="#f38ba8"  # red
+tmux_conf_theme_colour_17="#cdd6f4"  # text
+
+# Copy mode visual selection highlight (Catppuccin blue accent)
+set -g mode-style "fg=#1e1e2e,bg=#89b4fa"
+
+# Powerline separators (requires a Nerd Font)
+tmux_conf_theme_left_separator_main='\uE0B0'
+tmux_conf_theme_left_separator_sub='\uE0B1'
+tmux_conf_theme_right_separator_main='\uE0B2'
+tmux_conf_theme_right_separator_sub='\uE0B3'
+
+# Status bar content
+tmux_conf_theme_status_left=" ⊞ #S | ↑#{?uptime_d, #{uptime_d}d,}#{?uptime_h, #{uptime_h}h,}#{?uptime_m, #{uptime_m}m,} "
+tmux_conf_theme_status_right=" #{prefix}#{mouse}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},} , %R , %d %b | #{username} | #{hostname} "
+
+
+# -- plugins (TPM) -------------------------------------------------------------
+# Install: C-a I    Update: C-a U    Remove unlisted: C-a Alt-u
+
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-yank'       # robust cross-platform yank to clipboard
+set -g @plugin 'tmux-plugins/tmux-resurrect'  # save/restore sessions: C-a C-s / C-a C-r
+set -g @plugin 'tmux-plugins/tmux-continuum'  # auto-save every 15 min
+set -g @plugin 'sainnhe/tmux-fzf'             # fzf picker for sessions/windows/panes: C-a F
+
+# tmux-fzf direct bindings — skip the action menu for common operations
+# C-a F    full menu (default)
+# C-a S    jump straight to session switcher
+# C-a W    jump straight to window switcher
+TMUX_FZF_LAUNCH_KEY="F"
+bind-key S run-shell -b "~/.tmux/plugins/tmux-fzf/scripts/session.sh switch"
+bind-key W run-shell -b "~/.tmux/plugins/tmux-fzf/scripts/window.sh switch"
+
+set -g @continuum-restore 'on'
+
+# TPM init — must be last line
+run '~/.tmux/plugins/tpm/tpm'

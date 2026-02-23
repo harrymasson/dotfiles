@@ -1,0 +1,8 @@
+# ~/.zshenv
+# Purpose: Redirect zsh to XDG config directory.
+# Source: chezmoi: home/dot_zshenv
+# Notes: Keep this file minimal — it runs for ALL shells (interactive,
+#        non-interactive, login, scripts). Heavy setup goes in
+#        ~/.config/zsh/.zshenv and conf.d/.
+
+export ZDOTDIR="$HOME/.config/zsh"

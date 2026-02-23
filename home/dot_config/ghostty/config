@@ -1,0 +1,11 @@
+# ~/.config/ghostty/config
+# Source: chezmoi: home/dot_config/ghostty/config
+
+font-family = "Iosevka Nerd Font"
+# font-size = 13
+
+# Truecolor + 256-color for better themes
+theme = Catppuccin Mocha
+window-padding-x = 8
+window-padding-y = 8
+# scrollback = 100000

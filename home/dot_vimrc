@@ -1,0 +1,48 @@
+" ~/.vimrc — minimal fallback editor (nvim is primary IDE)
+" Source: chezmoi: home/dot_vimrc
+
+" --- Fzf (Homebrew): :FZF, :Buffers, :Lines, :Ag, etc.
+set rtp+=/opt/homebrew/opt/fzf
+
+" --- Vim, not vi
+set nocompatible
+
+" --- Backspace deletes over indent, EOL, and insert start
+set backspace=indent,eol,start
+
+" --- Syntax and file-type–based indenting
+syntax on
+filetype plugin indent on
+
+" --- Line numbers and position
+set number
+set ruler
+
+" --- Search: highlight matches, update as you type, ignore case unless you use caps
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+
+" --- Completion: show menu for tab-complete
+set wildmenu
+set wildmode=longest:full,full
+
+" --- Buffers: switch away without saving (no “save first” when opening another file)
+set hidden
+
+" --- Indent: spaces by default; filetype plugins can override
+set expandtab
+set shiftwidth=4
+set softtabstop=4
+set tabstop=8
+
+" --- Wrap long lines for reading (no horizontal scroll)
+set wrap
+set linebreak
+
+" --- Restore cursor to last position when reopening a file
+autocmd BufReadPost * if line("'\"") >= 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+" --- Clear search highlight on Enter (quick way to clear after / or ?)
+nnoremap <CR> :nohlsearch<CR><CR>

@@ -1,0 +1,99 @@
+# ~/.config/zsh/.zshrc
+# Purpose: Interactive shell configuration — zinit setup + conf.d loader.
+# Source: chezmoi: home/dot_config/zsh/dot_zshrc
+# Local overrides: ~/.config/zsh/local/*.zsh
+
+# ----- Profiling ------------------------------------------------------------
+# Set ZSH_PROFILE_STARTUP=1 before launching zsh to measure startup time.
+# Example: ZSH_PROFILE_STARTUP=1 zsh -i -c exit
+# Results print at shell exit.
+[[ "$ZSH_PROFILE_STARTUP" == 1 ]] && zmodload zsh/zprof
+
+# ----- Agentic IDE mode -----------------------------------------------------
+# When running inside Kiro (or similar agent runners), skip the heavy plugin
+# and prompt machinery — it breaks terminal output parsing. Load only the safe
+# conf.d subset that gives tools a correct environment, then return early.
+if [[ "$TERM_PROGRAM" == "kiro" ]]; then
+  # Kiro shell integration (enables working directory tracking etc.)
+  local _kiro_integration
+  _kiro_integration="$(kiro --locate-shell-integration-path zsh 2>/dev/null)"
+  [[ -f "$_kiro_integration" ]] && source "$_kiro_integration"
+
+  source "$ZDOTDIR/conf.d/00-core.zsh"
+  source "$ZDOTDIR/conf.d/10-history.zsh"
+  source "$ZDOTDIR/conf.d/41-mise.zsh"
+  for f in "$ZDOTDIR/local"/*.zsh(N); do source "$f"; done
+
+  # Minimal prompt: path (last 3 segments) + prompt char. No hooks, no async.
+  PS1='%F{cyan}%3~%f %# '
+  return 0
+fi
+
+# ----- Pre-local ------------------------------------------------------------
+for f in "$ZDOTDIR/local/before"/*.zsh(N); do source "$f"; done
+
+# ----- Zinit ----------------------------------------------------------------
+if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
+    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
+        print -P "%F{33} %F{34}Installation successful.%f%b" || \
+        print -P "%F{160} The clone has failed.%f%b"
+fi
+
+source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# Load annexes (required for some plugins)
+zinit light-mode for \
+    zdharma-continuum/zinit-annex-as-monitor \
+    zdharma-continuum/zinit-annex-bin-gem-node \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-rust
+
+# ----- Plugins --------------------------------------------------------------
+
+# Core UX
+zinit light zsh-users/zsh-autosuggestions
+zinit light zsh-users/zsh-completions
+zinit light jeffreytse/zsh-vi-mode
+
+# Oh-My-Zsh plugin snippets (no OMZ framework needed — zinit loads individually)
+zinit snippet OMZP::git
+zinit snippet OMZP::aliases
+zinit snippet OMZP::alias-finder
+zinit snippet OMZP::common-aliases
+# zoxide replaces autojump — init in conf.d/90-ui.zsh
+zinit snippet OMZP::aws
+zinit snippet OMZP::brew
+zinit snippet OMZP::docker
+zinit snippet OMZP::docker-compose
+zinit snippet OMZP::npm
+zinit snippet OMZP::node
+zinit snippet OMZP::rust
+zinit snippet OMZP::web-search
+zinit snippet OMZP::vscode
+
+# fzf-tab — replaces default tab completion with fzf picker (load after compinit, before syntax highlighting)
+zinit light Aloxaf/fzf-tab
+
+# Syntax highlighting — must load last
+zinit light zdharma-continuum/fast-syntax-highlighting
+
+# ----- Completions ----------------------------------------------------------
+autoload -Uz compinit && compinit -u
+
+# ----- Modular config -------------------------------------------------------
+# Load conf.d modules in order. Add machine-specific config to local/.
+for f in "$ZDOTDIR/conf.d"/*.zsh(N); do source "$f"; done
+for f in "$ZDOTDIR/local"/*.zsh(N); do source "$f"; done
+
+# ----- Prompt (Starship) ----------------------------------------------------
+eval "$(starship init zsh)"
+
+# ----- Post-local -----------------------------------------------------------
+for f in "$ZDOTDIR/local/after"/*.zsh(N); do source "$f"; done
+
+# ----- Profiling output -----------------------------------------------------
+[[ "$ZSH_PROFILE_STARTUP" == 1 ]] && zprof

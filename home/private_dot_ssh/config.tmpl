@@ -1,0 +1,12 @@
+# ~/.ssh/config
+# Source: chezmoi: home/private_dot_ssh/config.tmpl
+{{- $machineType := .machineType | default "personal" -}}
+{{ if eq $machineType "personal" }}
+Host github.com
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+{{ end }}
+Host *
+  UseKeychain yes

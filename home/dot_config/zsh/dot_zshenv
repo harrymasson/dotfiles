@@ -1,0 +1,12 @@
+# ~/.config/zsh/.zshenv
+# Purpose: Universal environment variables — runs for all shells.
+# Source: chezmoi: home/dot_config/zsh/dot_zshenv
+# Local overrides: ~/.config/zsh/local/paths.zsh
+# Notes: No external commands (no eval, no brew). Just exports.
+
+# Core PATH — homebrew first, then user local
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="$HOME/.local/bin:$PATH"
+
+# Rust/Cargo
+[[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"

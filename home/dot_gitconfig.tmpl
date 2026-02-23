@@ -1,0 +1,19 @@
+# ~/.gitconfig
+# Purpose: Global git configuration
+# Source: chezmoi: home/dot_gitconfig
+# Notes: For work email override, use ~/.config/git/local (not managed)
+
+[user]
+	email = {{ .gitEmail }}
+	name = {{ .gitName }}
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true
+[core]
+	pager = diff-so-fancy --patch
