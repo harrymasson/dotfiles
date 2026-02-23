@@ -5,6 +5,7 @@ font-family = "Iosevka Nerd Font"
 # font-size = 13
 
 # Truecolor + 256-color for better themes
+term = xterm-256color
 theme = Catppuccin Mocha
 window-padding-x = 8
 window-padding-y = 8
