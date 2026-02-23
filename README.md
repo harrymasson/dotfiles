@@ -6,7 +6,7 @@ Personal dotfiles managed with [chezmoi](https://www.chezmoi.io/) on macOS.
 
 ```bash
 chezmoi init --apply https://github.com/harrymasson/dotfiles.git
-brew bundle --file="$(chezmoi source-path)/Brewfile"
+brew bundle --file="$(dirname "$(chezmoi source-path)")/Brewfile"
 mise install && exec zsh
 ```
 

@@ -30,7 +30,7 @@ Answer `personal` or `work` — this controls which config blocks are included (
 
 ```bash
 # Install all Homebrew packages
-brew bundle --file="$(chezmoi source-path)/Brewfile"
+brew bundle --file="$(dirname "$(chezmoi source-path)")/Brewfile"
 
 # Install tool versions (Node, Python via mise)
 mise install
