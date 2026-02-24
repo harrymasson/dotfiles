@@ -71,6 +71,7 @@ nav:
       - Neovim: quick-reference/neovim.md
   - Tools:
       - Chezmoi: tools/chezmoi.md
+      - Chezmoi Multi-Context: tools/chezmoi-multi-context.md
       - Git: tools/git.md
       - Homebrew: tools/homebrew.md
       - mise: tools/mise.md

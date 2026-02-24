@@ -2,6 +2,8 @@
 
 Practical command reference for day-to-day use. For repo structure and workflow, see [structure](../getting-started/structure.md).
 
+For dual personal/work context wrappers (`czp`, `czw`, `cza`, `czx`, `czm`), see [Chezmoi Multi-Context Workflow](chezmoi-multi-context.md).
+
 ## Verifying what chezmoi manages
 
 ```bash
