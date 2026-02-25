@@ -126,8 +126,9 @@ __czm_overlap_check_critical() {
   for t in $CZA_CRITICAL_TARGETS; do
     local p=1
     local w=1
-    czp managed "$t" >/dev/null 2>&1 && p=0
-    czw managed "$t" >/dev/null 2>&1 && w=0
+    # chezmoi managed <path> always exits 0; check stdout instead.
+    czp managed "$t" 2>/dev/null | grep -q . && p=0
+    czw managed "$t" 2>/dev/null | grep -q . && w=0
     if [ $p -eq 0 ] && [ $w -eq 0 ]; then
       printf '[chezmoi-multi] OVERLAP: both contexts manage %s\n' "$t" >&2
       failed=1
@@ -200,8 +201,9 @@ czx() {
         return 2
       fi
 
-      czp managed "$target" >/dev/null 2>&1 && p=0
-      czw managed "$target" >/dev/null 2>&1 && w=0
+      # chezmoi managed <path> always exits 0; check stdout instead.
+      czp managed "$target" 2>/dev/null | grep -q . && p=0
+      czw managed "$target" 2>/dev/null | grep -q . && w=0
 
       if [ $p -eq 0 ] && [ $w -ne 0 ]; then
         __czm_log "routing edit to personal: $target"
@@ -230,8 +232,9 @@ czx() {
         return 2
       fi
 
-      czp managed "$target" >/dev/null 2>&1 && p=0
-      czw managed "$target" >/dev/null 2>&1 && w=0
+      # chezmoi managed <path> always exits 0; check stdout instead.
+      czp managed "$target" 2>/dev/null | grep -q . && p=0
+      czw managed "$target" 2>/dev/null | grep -q . && w=0
 
       if [ $p -eq 0 ] && [ $w -eq 0 ]; then
         echo "both"
