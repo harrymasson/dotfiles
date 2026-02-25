@@ -6,14 +6,103 @@
 [user]
 	email = {{ .gitEmail }}
 	name = {{ .gitName }}
+
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
+
 [init]
 	defaultBranch = main
+
 [pull]
+	# Rebase instead of merge on pull (good for linear history)
 	rebase = true
+
+[push]
+	default = simple
+	# Automatically set upstream on first push of a new branch
+	autoSetupRemote = true
+
+[fetch]
+	# Clean up remote-tracking branches and tags deleted on origin
+	prune = true
+	pruneTags = true
+
+[rebase]
+	# If you have local changes during pull --rebase, stash/apply automatically
+	autoStash = true
+	# Helps keep refs updated when rebasing stacked branches
+	updateRefs = true
+
+[merge]
+	# Better conflict markers than default
+	conflictStyle = zdiff3
+
+[rerere]
+	# Reuse recorded conflict resolutions (great with rebase-heavy workflows)
+	enabled = true
+
+[diff]
+	# Makes moved code easier to read in diffs
+	colorMoved = default
+
+[commit]
+	# Show diff in commit message editor
+	verbose = true
+
+[status]
+	aheadBehind = true
+
 [core]
-	pager = diff-so-fancy --patch
+  editor = nvim
+	pager = delta
+
+	# Previous diff-so-fancy setup (kept for reference, disabled)
+	# pager = diff-so-fancy --patch
+
+	# Optional performance boosts (generally good on local filesystems)
+	fsmonitor = true
+	untrackedCache = true
+
+[interactive]
+	singleKey = true
+  diffFilter = delta --color-only
+
+[delta]
+	# Core delta interaction and layout defaults used in all environments.
+	navigate = true                    # Enable pager navigation/search behavior in delta output.
+	line-numbers = true
+	side-by-side = false               # Use unified diff layout instead of side-by-side columns.
+
+	# Theme selection: delta feature bundle + syntax token colors for code in diffs.
+	features = catppuccin-mocha
+	syntax-theme = "Catppuccin Mocha"
+
+	# File header styling (the header before hunks, e.g. "src/app.py").
+	file-style = bold yellow ul
+	file-decoration-style = none
+
+	# Hunk header styling (the @@ ... @@ header line and its displayed context).
+	hunk-header-style = file line-number bold syntax
+	hunk-header-decoration-style = blue box
+
+	# Commit header styling in delta-rendered log/show output.
+	commit-style = bold yellow
+	commit-decoration-style = bold yellow box
+
+	# Conditional highlighting for whitespace issues flagged by Git in diffs (ex: trailing spaces)
+	whitespace-error-style = 22 reverse
+
+[delta "catppuccin-mocha"]
+	# Theme-specific contrast overrides to make Catppuccin diffs easier to scan.
+  # *-style handles added/removed lines, *-emph-style handles changed segments
+	plus-style = syntax "#16351f"
+	plus-emph-style = syntax bold "#1f7a3a"
+	minus-style = syntax "#3a1616"
+	minus-emph-style = syntax bold "#a33a3a"
+
+[include]
+	path = ~/.config/git/local
+
