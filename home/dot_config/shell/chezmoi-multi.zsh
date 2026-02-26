@@ -47,20 +47,26 @@ __czm_require_cmd() {
   }
 }
 
+__czm_has_work() {
+  [ -d "$CZW_SOURCE" ]
+}
+
 __czm_ensure_dirs() {
-  mkdir -p "$(dirname "$CZP_CACHE")" "$(dirname "$CZW_CACHE")" \
-    "$(dirname "$CZP_STATE")" "$(dirname "$CZW_STATE")" \
-    "$CZP_CACHE" "$CZW_CACHE"
+  mkdir -p "$(dirname "$CZP_CACHE")" "$(dirname "$CZP_STATE")" "$CZP_CACHE"
+  if __czm_has_work; then
+    mkdir -p "$(dirname "$CZW_CACHE")" "$(dirname "$CZW_STATE")" "$CZW_CACHE"
+  fi
 }
 
 __czm_validate_contexts() {
   __czm_require_cmd chezmoi || return 1
 
   [ -f "$CZP_CONFIG" ] || { __czm_err "missing personal config: $CZP_CONFIG"; return 1; }
-  [ -f "$CZW_CONFIG" ] || { __czm_err "missing work config: $CZW_CONFIG"; return 1; }
-
   [ -d "$CZP_SOURCE" ] || { __czm_err "missing personal source dir: $CZP_SOURCE"; return 1; }
-  [ -d "$CZW_SOURCE" ] || { __czm_err "missing work source dir: $CZW_SOURCE"; return 1; }
+
+  if __czm_has_work; then
+    [ -f "$CZW_CONFIG" ] || { __czm_err "work source exists but missing work config: $CZW_CONFIG"; return 1; }
+  fi
 
   __czm_ensure_dirs || return 1
 }
@@ -173,6 +179,10 @@ __czm_overlap_check_managed_intersection() {
 
 cz-overlap-check() {
   __czm_validate_contexts || return 1
+  if ! __czm_has_work; then
+    __czm_log "no work context — skipping overlap check"
+    return 0
+  fi
   case "$CZA_OVERLAP_MODE" in
     critical-list) __czm_overlap_check_critical ;;
     managed-intersection) __czm_overlap_check_managed_intersection ;;
@@ -279,9 +289,14 @@ EOF2
     doctor)
       __czm_validate_contexts || return 1
       echo "chezmoi: $(command -v chezmoi)"
-      echo "contexts: OK"
-      echo "running overlap check..."
-      cz-overlap-check
+      echo "personal context: OK"
+      if __czm_has_work; then
+        echo "work context: OK"
+        echo "running overlap check..."
+        cz-overlap-check
+      else
+        echo "work context: not configured (no source dir at $CZW_SOURCE)"
+      fi
       ;;
     *)
       __czm_err "usage: czm <paths|doctor>"
@@ -306,37 +321,50 @@ cza() {
       cz-overlap-check || return 1
       __czm_log "applying personal context"
       czp apply "$@" || return $?
-      __czm_log "applying work context"
-      czw apply "$@" || return $?
+      if __czm_has_work; then
+        __czm_log "applying work context"
+        czw apply "$@" || return $?
+      fi
       if [ "$CZA_VERIFY_AFTER_APPLY" = "1" ]; then
-        __czm_log "verifying personal + work contexts"
+        __czm_log "verifying personal context"
         czp verify || return $?
-        czw verify || return $?
+        if __czm_has_work; then
+          __czm_log "verifying work context"
+          czw verify || return $?
+        fi
       fi
       ;;
     dry-run)
       cz-overlap-check || return 1
       czp apply -n -v "$@" || return $?
-      czw apply -n -v "$@" || return $?
+      if __czm_has_work; then
+        czw apply -n -v "$@" || return $?
+      fi
       ;;
     diff)
       echo "== personal =="
       czp diff "$@" || return $?
-      echo
-      echo "== work =="
-      czw diff "$@" || return $?
+      if __czm_has_work; then
+        echo
+        echo "== work =="
+        czw diff "$@" || return $?
+      fi
       ;;
     status)
       echo "== personal =="
       czp status "$@" || return $?
-      echo
-      echo "== work =="
-      czw status "$@" || return $?
+      if __czm_has_work; then
+        echo
+        echo "== work =="
+        czw status "$@" || return $?
+      fi
       ;;
     verify)
       cz-overlap-check || return 1
       czp verify "$@" || return $?
-      czw verify "$@" || return $?
+      if __czm_has_work; then
+        czw verify "$@" || return $?
+      fi
       ;;
     cd)
       __czm_err "cza cd is ambiguous; use czp cd or czw cd"

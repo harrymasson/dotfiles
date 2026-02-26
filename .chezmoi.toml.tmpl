@@ -1,5 +1,0 @@
-[data]
-    machineType = {{ promptStringOnce . "machineType" "Machine type (personal/work)" "personal" | quote }}
-    username = {{ promptStringOnce . "username" "Local username" .chezmoi.username | quote }}
-    gitName = {{ promptStringOnce . "gitName" "Git name (for ~/.gitconfig)" "" | quote }}
-    gitEmail = {{ promptStringOnce . "gitEmail" "Git email (for ~/.gitconfig)" "" | quote }}

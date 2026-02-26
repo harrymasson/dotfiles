@@ -153,10 +153,6 @@ cat > "$CZW_CONFIG" <<EOF
 sourceDir = "$CZW_SOURCE"
 cacheDir  = "$CZW_CACHE"
 persistentState = "$CZW_STATE"
-
-[data]
-  profile       = "work"
-  isWorkMachine = true
 EOF
 
 echo "  CZ_DEST    = $CZ_DEST"

@@ -1,0 +1,9 @@
+{{- $machineType := promptStringOnce . "machineType" "Machine type (personal/work)" "personal" -}}
+{{- if not (or (eq $machineType "personal") (eq $machineType "work")) -}}
+{{-   fail (printf "machineType must be 'personal' or 'work', got: %q" $machineType) -}}
+{{- end -}}
+[data]
+    machineType = {{ $machineType | quote }}
+    username = {{ promptStringOnce . "username" "Local username" .chezmoi.username | quote }}
+    gitName = {{ promptStringOnce . "gitName" "Git name (for ~/.gitconfig)" "" | quote }}
+    gitEmail = {{ promptStringOnce . "gitEmail" "Git email (for ~/.gitconfig)" "" | quote }}
