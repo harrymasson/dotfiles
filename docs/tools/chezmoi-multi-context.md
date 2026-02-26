@@ -93,7 +93,7 @@ Examples:
 
 - `~/.gitconfig.work.local`
 - `~/.zshrc.work.local`
-- `~/.ssh/config.work.local`
+- `~/.ssh/config.local`
 - work-only files under `~/.config/company/`
 
 ### Forbidden overlap examples

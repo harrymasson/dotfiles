@@ -60,6 +60,7 @@ nav:
   - Getting Started:
       - Overview: getting-started/index.md
       - Install: getting-started/install.md
+      - Install (work machine): getting-started/install-work.md
       - Structure: getting-started/structure.md
   - Quick Reference:
       - Overview: quick-reference/index.md

@@ -3,6 +3,7 @@
 Set up on a new machine, understand how the repo is organised, and browse what's tracked.
 
 - [Install on a new machine](install.md) — step-by-step bootstrap from scratch
+- [Install on a work machine](install-work.md) — personal + work overlay repos with the multi-context wrappers
 - [Repo structure](structure.md) — how source files map to `~/`, chezmoi conventions, machine-specific config
 
 ## Security
