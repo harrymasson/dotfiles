@@ -7,7 +7,7 @@
 # Configurable paths (defaults)
 # -----------------------------
 : "${CZP_CONFIG:=$HOME/.config/chezmoi/chezmoi.toml}"
-: "${CZW_CONFIG:=$HOME/.config/chezmoi-work/chezmoi.toml}"
+: "${CZW_CONFIG:=$HOME/.config/chezmoi/chezmoi.toml}"
 
 : "${CZP_SOURCE:=$HOME/.local/share/chezmoi-personal}"
 : "${CZW_SOURCE:=$HOME/.local/share/chezmoi-work}"
