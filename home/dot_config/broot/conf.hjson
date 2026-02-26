@@ -1,0 +1,11 @@
+// ~/.config/broot/conf.hjson
+// Purpose: Broot base configuration and theme imports.
+// Source: chezmoi: home/dot_config/broot/conf.hjson
+{
+  imports: [
+    {
+      file: "skins/catppuccin-mocha-mauve.hjson"
+      luma: dark
+    }
+  ]
+}
