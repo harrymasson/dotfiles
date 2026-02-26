@@ -42,11 +42,11 @@ When prompted:
 
 Setting `machineType = work` causes the SSH config template to skip the personal `github.com` host block.
 
-This apply installs the wrapper infrastructure alongside all other personal dotfiles:
+This installs:
 
+- `~/.config/chezmoi/chezmoi.toml` — created by `chezmoi init` with your prompted values; used by both plain `chezmoi` and `czp`
 - `~/.config/shell/chezmoi-multi.zsh` — the `czp`/`czw`/`cza`/`czx`/`czm` commands
-- `~/.config/chezmoi-personal/chezmoi.toml` — `czp` config, already points at `~/.local/share/chezmoi-personal`
-- `~/.config/chezmoi-work/chezmoi.toml` — `czw` config, already points at `~/.local/share/chezmoi-work`
+- `~/.config/chezmoi-work/chezmoi.toml` — `czw` config, points at `~/.local/share/chezmoi-work`
 
 ---
 

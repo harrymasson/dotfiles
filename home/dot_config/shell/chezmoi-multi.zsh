@@ -6,7 +6,7 @@
 # -----------------------------
 # Configurable paths (defaults)
 # -----------------------------
-: "${CZP_CONFIG:=$HOME/.config/chezmoi-personal/chezmoi.toml}"
+: "${CZP_CONFIG:=$HOME/.config/chezmoi/chezmoi.toml}"
 : "${CZW_CONFIG:=$HOME/.config/chezmoi-work/chezmoi.toml}"
 
 : "${CZP_SOURCE:=$HOME/.local/share/chezmoi-personal}"
@@ -26,7 +26,7 @@
 : "${CZA_DEBUG:=0}"                    # 1 for debug logging
 
 # Optional critical targets list for overlap check (space-separated)
-: "${CZA_CRITICAL_TARGETS:=$HOME/.gitconfig $HOME/.zshrc $HOME/.ssh/config $HOME/.gitconfig.work.local $HOME/.zshrc.work.local $HOME/.ssh/config.work.local}"
+: "${CZA_CRITICAL_TARGETS:=$HOME/.gitconfig $HOME/.zshrc $HOME/.ssh/config}"
 
 # -----------------------------
 # Internal utilities
