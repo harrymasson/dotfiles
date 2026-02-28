@@ -18,9 +18,6 @@ alias tn='tmux new -s'
 alias tl='tmux ls'
 alias tk='tmux kill-session -t'
 
-# Chezmoi
-alias cz='chezmoi'
-
 # Misc
 alias node-async="node --experimental-repl-await"
 alias cd-obs="cd '$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/obsidian-vault'"
