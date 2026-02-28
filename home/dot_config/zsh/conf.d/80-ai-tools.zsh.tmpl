@@ -1,0 +1,6 @@
+# ~/.config/zsh/conf.d/80-ai-tools.zsh
+# Purpose: AI tool configuration — personal machines only.
+# Source: chezmoi: home/dot_config/zsh/conf.d/80-ai-tools.zsh.tmpl
+{{ if eq .machineType "personal" -}}
+export ENABLE_LSP_TOOL=1
+{{- end }}
