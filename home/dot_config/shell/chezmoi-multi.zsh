@@ -366,12 +366,38 @@ cza() {
         czw verify "$@" || return $?
       fi
       ;;
+    managed)
+      if __czm_has_work; then
+        local _tmp_p _tmp_w
+        _tmp_p="$(mktemp)" && _tmp_w="$(mktemp)" || return 1
+        czp managed "$@" | sort > "$_tmp_p"
+        czw managed "$@" | sort > "$_tmp_w"
+        comm -23 "$_tmp_p" "$_tmp_w" | sed 's/^/[personal] /'
+        comm -12 "$_tmp_p" "$_tmp_w" | sed 's/^/[both]     /'
+        comm -13 "$_tmp_p" "$_tmp_w" | sed 's/^/[work]     /'
+        rm -f "$_tmp_p" "$_tmp_w"
+      else
+        czp managed "$@" | sed 's/^/[personal] /'
+      fi
+      ;;
+    unmanaged)
+      if __czm_has_work; then
+        local _tmp_p _tmp_w
+        _tmp_p="$(mktemp)" && _tmp_w="$(mktemp)" || return 1
+        czp unmanaged "$@" | sort > "$_tmp_p"
+        czw unmanaged "$@" | sort > "$_tmp_w"
+        comm -12 "$_tmp_p" "$_tmp_w"
+        rm -f "$_tmp_p" "$_tmp_w"
+      else
+        czp unmanaged "$@" || return $?
+      fi
+      ;;
     cd)
       __czm_err "cza cd is ambiguous; use czp cd or czw cd"
       return 2
       ;;
     *)
-      __czm_err "usage: cza [apply|dry-run|diff|status|verify] [chezmoi args...]"
+      __czm_err "usage: cza [apply|dry-run|diff|status|verify|managed|unmanaged] [chezmoi args...]"
       return 2
       ;;
   esac
