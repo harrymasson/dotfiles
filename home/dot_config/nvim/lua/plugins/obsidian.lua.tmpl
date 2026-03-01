@@ -1,4 +1,6 @@
 -- ~/.config/nvim/lua/plugins/obsidian.lua
+-- Purpose: Obsidian.nvim setup without hardcoded vault paths in git.
+-- Source: chezmoi: home/dot_config/nvim/lua/plugins/obsidian.lua.tmpl
 return {
   {
     "obsidian-nvim/obsidian.nvim",
@@ -14,9 +16,38 @@ return {
     opts = {
       legacy_commands = false, -- will be removed in the next major release
       workspaces = {
+{{- $workspaces := .nvim.obsidian.workspaces }}
+{{- if $workspaces }}
+{{- range $name := keys $workspaces | sortAlpha }}
         {
+          name = {{ $name | quote }},
+          path = {{ index $workspaces $name | quote }},
+        },
+{{- end }}
+{{- else if .nvim.obsidian.vault_path }}
+        {
+          -- Backward-compatible single-vault key.
           name = "personal",
-          path = "~/Documents/vault-2025-07",
+          path = {{ .nvim.obsidian.vault_path | quote }},
+        },
+{{- end }}
+        {
+          -- Dynamic workspace: when you're in any folder that is a vault,
+          -- use current buffer directory (fallback: cwd).
+          name = "current",
+          path = function()
+            local buf_name = vim.api.nvim_buf_get_name(0)
+            if buf_name ~= "" then
+              return assert(vim.fs.dirname(buf_name))
+            end
+            return vim.fn.getcwd()
+          end,
+          overrides = {
+            notes_subdir = vim.NIL,
+            new_notes_location = "current_dir",
+            templates = { folder = vim.NIL },
+            disable_frontmatter = true,
+          },
         },
       },
       completion = {

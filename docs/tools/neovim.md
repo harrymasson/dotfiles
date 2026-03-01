@@ -45,12 +45,24 @@ After confirming updates work, commit the updated `lazy-lock.json`.
 
 ### Obsidian integration
 
-`lua/plugins/obsidian.lua` enables `obsidian.nvim` for markdown files with:
+`lua/plugins/obsidian.lua.tmpl` enables `obsidian.nvim` for markdown files with:
 
-- workspace: `~/Documents/vault-2025-07`
+- optional named workspaces from chezmoi data map: `.nvim.obsidian.workspaces` (name -> path)
+- backward-compatible fallback key: `.nvim.obsidian.vault_path`
+- dynamic `current` workspace based on the current buffer folder (fallback: cwd)
 - telescope picker integration
 - blink.cmp completion integration
 - which-key group under `<leader>o`
+
+Example local data (not committed):
+
+```yaml
+nvim:
+  obsidian:
+    workspaces:
+      personal: ~/vaults/personal
+      work: ~/vaults/work
+```
 
 Common mappings include:
 
