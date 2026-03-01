@@ -57,12 +57,13 @@ After confirming updates work, commit the updated `lazy-lock.json`.
 Example local data (not committed):
 
 ```yaml
-nvim:
-  obsidian:
-    workspaces:
-      personal: ~/vaults/personal
-      work: ~/vaults/work
+# ~/.config/chezmoi/chezmoi.toml (or your active chezmoi config)
+[data.nvim.obsidian.workspaces]
+personal = "~/vaults/personal"
+work = "~/vaults/work"
 ```
+
+No repository-side `home/.chezmoi.toml.tmpl` update is required for this; the template safely handles missing keys and only emits configured workspaces when present.
 
 Common mappings include:
 

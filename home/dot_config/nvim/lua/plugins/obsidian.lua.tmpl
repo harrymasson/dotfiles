@@ -16,7 +16,10 @@ return {
     opts = {
       legacy_commands = false, -- will be removed in the next major release
       workspaces = {
-{{- $workspaces := .nvim.obsidian.workspaces }}
+{{- $nvim := (get . "nvim") | default dict }}
+{{- $obsidian := (get $nvim "obsidian") | default dict }}
+{{- $workspaces := get $obsidian "workspaces" }}
+{{- $vaultPath := get $obsidian "vault_path" }}
 {{- if $workspaces }}
 {{- range $name := keys $workspaces | sortAlpha }}
         {
@@ -24,11 +27,11 @@ return {
           path = {{ index $workspaces $name | quote }},
         },
 {{- end }}
-{{- else if .nvim.obsidian.vault_path }}
+{{- else if $vaultPath }}
         {
           -- Backward-compatible single-vault key.
           name = "personal",
-          path = {{ .nvim.obsidian.vault_path | quote }},
+          path = {{ $vaultPath | quote }},
         },
 {{- end }}
         {
