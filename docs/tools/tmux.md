@@ -23,6 +23,8 @@ Bindings added or changed from oh-my-tmux defaults:
 
 Mouse is enabled. Window auto-rename is disabled (`allow-rename off`).
 
+When tmux captures mouse events, use `Shift` to pass the click through to the terminal. For link opening in terminals like Windows Terminal, use `Shift+Cmd/Ctrl+Click`.
+
 ## Shell aliases
 
 From `conf.d/20-aliases.zsh` and `conf.d/45-tmux.zsh`:
