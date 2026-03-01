@@ -20,6 +20,7 @@ brew "chezmoi"        # manages this repo
 brew "git"            # foundational vcs
 brew "git-lfs"        # required by dot_gitconfig.tmpl filter config
 brew "git-delta"      # diff displays (replaces diff-so-fancy)
+brew "gh"             # github CLI
 
 # ---------------------------------------------------------------------------
 # Shell

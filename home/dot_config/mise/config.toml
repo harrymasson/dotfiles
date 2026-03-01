@@ -7,5 +7,6 @@
 # To install all tools listed here: mise install
 
 [tools]
+bun = "latest"
 node = "22"      # was nvm default; matches v22.16.0 (lts/jod)
 python = "3.14"  # matches current active python
